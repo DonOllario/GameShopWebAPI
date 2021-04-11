@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameShopWebAPI.Migrations
 {
     [DbContext(typeof(GameShopDbContext))]
-    [Migration("20210411141221_CreateGameShopDB")]
+    [Migration("20210411193641_CreateGameShopDB")]
     partial class CreateGameShopDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -151,6 +151,7 @@ namespace GameShopWebAPI.Migrations
 
                     b.Property<string>("EmploymentDate")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
@@ -237,6 +238,7 @@ namespace GameShopWebAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("OrderDate")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.HasKey("OrderId");

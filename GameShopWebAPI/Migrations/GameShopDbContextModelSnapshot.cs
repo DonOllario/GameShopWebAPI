@@ -149,6 +149,7 @@ namespace GameShopWebAPI.Migrations
 
                     b.Property<string>("EmploymentDate")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
@@ -235,6 +236,7 @@ namespace GameShopWebAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("OrderDate")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2");
 
                     b.HasKey("OrderId");

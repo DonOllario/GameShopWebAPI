@@ -40,6 +40,7 @@ namespace GameShopWebAPI.EntityConfigurations
 
             builder
                 .Property(e => e.EmploymentDate)
+                .ValueGeneratedOnAdd()
                 .IsRequired();
 
             //Relations--------------------------------

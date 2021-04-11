@@ -21,6 +21,7 @@ namespace GameShopWebAPI.EntityConfigurations
 
             builder
                 .Property(o => o.OrderDate)
+                .ValueGeneratedOnAdd()
                 .IsRequired();
 
             //Relations--------------------------------
@@ -34,8 +35,6 @@ namespace GameShopWebAPI.EntityConfigurations
                 .HasOne(o => o.Employee)
                 .WithMany(e => e.Orders)
                 .HasForeignKey(o => o.EmployeeId);
-
-
         }
     }
 }
