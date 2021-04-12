@@ -31,7 +31,7 @@ namespace GameShopWebAPI.Migrations
                     GameName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     GameDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     GamePrice = table.Column<double>(type: "float", nullable: false),
-                    ReleaseDate = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    ReleaseDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -87,7 +87,7 @@ namespace GameShopWebAPI.Migrations
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EmploymentDate = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    EmploymentDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     AddressId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -202,40 +202,23 @@ namespace GameShopWebAPI.Migrations
                     OrderLineId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    OrderId = table.Column<int>(type: "int", nullable: false)
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    GameId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderLines", x => x.OrderLineId);
                     table.ForeignKey(
-                        name: "FK_OrderLines_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "OrderId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "GameOrderLine",
-                columns: table => new
-                {
-                    GamesGameId = table.Column<int>(type: "int", nullable: false),
-                    OrderLinesOrderLineId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_GameOrderLine", x => new { x.GamesGameId, x.OrderLinesOrderLineId });
-                    table.ForeignKey(
-                        name: "FK_GameOrderLine_Games_GamesGameId",
-                        column: x => x.GamesGameId,
+                        name: "FK_OrderLines_Games_GameId",
+                        column: x => x.GameId,
                         principalTable: "Games",
                         principalColumn: "GameId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_GameOrderLine_OrderLines_OrderLinesOrderLineId",
-                        column: x => x.OrderLinesOrderLineId,
-                        principalTable: "OrderLines",
-                        principalColumn: "OrderLineId",
+                        name: "FK_OrderLines_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
+                        principalColumn: "OrderId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -260,9 +243,9 @@ namespace GameShopWebAPI.Migrations
                 column: "GenresGenreId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GameOrderLine_OrderLinesOrderLineId",
-                table: "GameOrderLine",
-                column: "OrderLinesOrderLineId");
+                name: "IX_OrderLines_GameId",
+                table: "OrderLines",
+                column: "GameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderLines_OrderId",
@@ -294,7 +277,7 @@ namespace GameShopWebAPI.Migrations
                 name: "GameGenre");
 
             migrationBuilder.DropTable(
-                name: "GameOrderLine");
+                name: "OrderLines");
 
             migrationBuilder.DropTable(
                 name: "Stores");
@@ -304,9 +287,6 @@ namespace GameShopWebAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "Games");
-
-            migrationBuilder.DropTable(
-                name: "OrderLines");
 
             migrationBuilder.DropTable(
                 name: "Orders");

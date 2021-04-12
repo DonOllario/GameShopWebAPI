@@ -1,4 +1,5 @@
 ﻿using GameShopWebAPI.Models;
+using GameShopWebAPI.Requests;
 using GameShopWebAPI.Responses;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,6 +19,7 @@ namespace GameShopWebAPI.Controllers
             _gameShopDbContext = gameShopDbContext;
         }
 
+        //Visar alla Addresser
         [HttpGet("ShowAddresses")]
         public ActionResult<List<Address>> GetAddress() 
         {
@@ -43,6 +45,23 @@ namespace GameShopWebAPI.Controllers
             {
                 throw new ArgumentException($"You have entered something invalid {ex}, please try again");
             }
+        }
+
+        
+
+        //Lägger till en ny address
+        [HttpPost("AddAddress")]
+        public ActionResult<string> AddAddress([FromBody] AddAddressRequest request)
+        {
+            var address = new Address
+            {
+                StreetAddress = request.StreetAddress,
+                City = request.City,
+                PostalCode = request.PostalCode
+            };
+            _gameShopDbContext.Addresses.Add(address);
+            _gameShopDbContext.SaveChanges();
+            return Ok($"Your address information has been saved sucessfully, {address.AddressId} at {address.StreetAddress}.");
         }
     }
 }

@@ -7,5 +7,9 @@ namespace GameShopWebAPI.Responses
 {
     public class EmployeeResponse
     {
+        public Guid EmployeeNumber { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public DateTime EmploymentDate { get; set; }
     }
 }

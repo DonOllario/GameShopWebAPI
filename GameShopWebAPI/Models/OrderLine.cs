@@ -7,16 +7,13 @@ namespace GameShopWebAPI.Models
 {
     public class OrderLine
     {
-        public OrderLine() 
-        {
-            Games = new List<Game>();
-        }
         public int OrderLineId { get; set; }
         public int Quantity { get; set; }
 
 
         public int OrderId {get; set;}
         public Order Order { get; set; }
-        public ICollection<Game> Games { get; set; }
+        public int GameId { get; set; }
+        public Game Game { get; set; }
     }
 }

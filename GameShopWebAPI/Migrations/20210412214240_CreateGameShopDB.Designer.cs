@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GameShopWebAPI.Migrations
 {
     [DbContext(typeof(GameShopDbContext))]
-    [Migration("20210411193641_CreateGameShopDB")]
+    [Migration("20210412214240_CreateGameShopDB")]
     partial class CreateGameShopDB
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,21 +49,6 @@ namespace GameShopWebAPI.Migrations
                     b.HasIndex("GenresGenreId");
 
                     b.ToTable("GameGenre");
-                });
-
-            modelBuilder.Entity("GameOrderLine", b =>
-                {
-                    b.Property<int>("GamesGameId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderLinesOrderLineId")
-                        .HasColumnType("int");
-
-                    b.HasKey("GamesGameId", "OrderLinesOrderLineId");
-
-                    b.HasIndex("OrderLinesOrderLineId");
-
-                    b.ToTable("GameOrderLine");
                 });
 
             modelBuilder.Entity("GameShopWebAPI.Models.Address", b =>
@@ -149,10 +134,9 @@ namespace GameShopWebAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("EmploymentDate")
-                        .IsRequired()
+                    b.Property<DateTime>("EmploymentDate")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -192,9 +176,8 @@ namespace GameShopWebAPI.Migrations
                     b.Property<double>("GamePrice")
                         .HasColumnType("float");
 
-                    b.Property<string>("ReleaseDate")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<DateTime>("ReleaseDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("GameId");
 
@@ -259,6 +242,9 @@ namespace GameShopWebAPI.Migrations
                         .HasAnnotation("SqlServer:IdentitySeed", 1)
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("GameId")
+                        .HasColumnType("int");
+
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
@@ -266,6 +252,8 @@ namespace GameShopWebAPI.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("OrderLineId");
+
+                    b.HasIndex("GameId");
 
                     b.HasIndex("OrderId");
 
@@ -321,21 +309,6 @@ namespace GameShopWebAPI.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("GameOrderLine", b =>
-                {
-                    b.HasOne("GameShopWebAPI.Models.Game", null)
-                        .WithMany()
-                        .HasForeignKey("GamesGameId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("GameShopWebAPI.Models.OrderLine", null)
-                        .WithMany()
-                        .HasForeignKey("OrderLinesOrderLineId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("GameShopWebAPI.Models.Customer", b =>
                 {
                     b.HasOne("GameShopWebAPI.Models.Address", "Address")
@@ -379,11 +352,19 @@ namespace GameShopWebAPI.Migrations
 
             modelBuilder.Entity("GameShopWebAPI.Models.OrderLine", b =>
                 {
+                    b.HasOne("GameShopWebAPI.Models.Game", "Game")
+                        .WithMany("OrderLines")
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("GameShopWebAPI.Models.Order", "Order")
                         .WithMany("OrderLines")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Game");
 
                     b.Navigation("Order");
                 });
@@ -416,6 +397,11 @@ namespace GameShopWebAPI.Migrations
             modelBuilder.Entity("GameShopWebAPI.Models.Employee", b =>
                 {
                     b.Navigation("Orders");
+                });
+
+            modelBuilder.Entity("GameShopWebAPI.Models.Game", b =>
+                {
+                    b.Navigation("OrderLines");
                 });
 
             modelBuilder.Entity("GameShopWebAPI.Models.Order", b =>

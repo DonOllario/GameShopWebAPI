@@ -32,7 +32,7 @@ namespace GameShopWebAPI.EntityConfigurations
                 .HasForeignKey(ol => ol.OrderId);
 
             builder
-                .HasMany(ol => ol.Games)
+                .HasOne(ol => ol.Game)
                 .WithMany(o => o.OrderLines);
         }
     }

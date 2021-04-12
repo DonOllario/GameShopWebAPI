@@ -42,7 +42,7 @@ namespace GameShopWebAPI.EntityConfigurations
 
             builder
                 .HasMany(g => g.OrderLines)
-                .WithMany(ol => ol.Games);
+                .WithOne(ol => ol.Game);
         }
     }
 }

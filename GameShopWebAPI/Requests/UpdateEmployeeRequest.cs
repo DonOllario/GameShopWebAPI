@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 
 namespace GameShopWebAPI.Requests
 {
-    public class AddGenreRequest
+    public class UpdateEmployeeRequest
     {
-        public string GenreName { get; set; }
-        public string GenreDescription { get; set; }
     }
 }
